@@ -29,7 +29,7 @@ func getIntegerFromParams(str string) int {
 func Hello(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	enableCors(&w)
 	w.Header().Set("content-type", "text/plain")
-	var userInput = ps.ByName("name")
+	var userInput = ps.ByName("number")
 	var maxFib = getIntegerFromParams(userInput)
 	f := fib()
 		for i := 0; i < maxFib; i++ {
@@ -44,6 +44,6 @@ func enableCors(w *http.ResponseWriter) {
 func main() {
 router := httprouter.New()
 router.GET("/api", Index)
-router.GET("/api/hello/:name", Hello)
+router.GET("/api/fibonacci/:number", Hello)
 log.Fatal(http.ListenAndServe(":8080", router))
 }
