@@ -17,11 +17,6 @@ func fib() func() int {
 	}
 }
 
-// func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-// 	enableCors(&w)
-// 	fmt.Fprint(w, "Welcome!\n")
-// }
-
 func getIntegerFromParams(str string) int {
 	strVar := str
 	intVar, _ := strconv.Atoi(strVar)
@@ -31,8 +26,7 @@ func getIntegerFromParams(str string) int {
 func GetNumbers(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	enableCors(&w)
 	w.Header().Set("content-type", "application/json")
-	var userInput = ps.ByName("number")
-	var maxFib = getIntegerFromParams(userInput)
+	var maxFib = getIntegerFromParams(ps.ByName("number"))
 	output := make([]int, 0)
 	f := fib()
 		for i := 0; i < maxFib; i++ {
