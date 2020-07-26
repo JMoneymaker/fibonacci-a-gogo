@@ -9,10 +9,6 @@ import (
 "encoding/json"
 )
 
-func enableCors(w *http.ResponseWriter) {
-	(*w).Header().Set("Access-Control-Allow-Origin", "*")
-}
-
 func getIntegerFromParams(str string) int {
 	strVar := str
 	intVar, _ := strconv.Atoi(strVar)
@@ -28,7 +24,7 @@ func fib() func() int {
 }
 
 func GetNumbers(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	enableCors(&w)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	var maxFib = getIntegerFromParams(ps.ByName("number"))
 	
 	output := make([]int, 0)
