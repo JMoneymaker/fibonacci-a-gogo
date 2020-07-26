@@ -1,10 +1,12 @@
 package main
+
 import (
 "fmt"
 "github.com/julienschmidt/httprouter"
 "net/http"
 "log"
 "strconv"
+"encoding/json"
 )
 
 func fib() func() int {
@@ -15,10 +17,10 @@ func fib() func() int {
 	}
 }
 
-func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	enableCors(&w)
-	fmt.Fprint(w, "Welcome!\n")
-}
+// func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+// 	enableCors(&w)
+// 	fmt.Fprint(w, "Welcome!\n")
+// }
 
 func getIntegerFromParams(str string) int {
 	strVar := str
@@ -26,15 +28,17 @@ func getIntegerFromParams(str string) int {
 	return intVar
 }
 
-func Hello(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+func GetNumbers(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	enableCors(&w)
-	w.Header().Set("content-type", "text/plain")
+	w.Header().Set("content-type", "application/json")
 	var userInput = ps.ByName("number")
 	var maxFib = getIntegerFromParams(userInput)
 	f := fib()
 		for i := 0; i < maxFib; i++ {
-		fmt.Fprint(w, f())
+			fmt.Println(f())
 	}
+	jsonArray, _ := json.Marshal(f())
+	fmt.Fprint(w, string(jsonArray))
 }
 
 func enableCors(w *http.ResponseWriter) {
@@ -43,7 +47,7 @@ func enableCors(w *http.ResponseWriter) {
 
 func main() {
 router := httprouter.New()
-router.GET("/api", Index)
-router.GET("/api/fibonacci/:number", Hello)
+// router.GET("/api", Index)
+router.GET("/api/fibonacci/:number", GetNumbers)
 log.Fatal(http.ListenAndServe(":8080", router))
 }
