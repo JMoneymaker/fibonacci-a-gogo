@@ -4,10 +4,15 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/julienschmidt/httprouter"
+	"gopkg.in/validator.v2"
 	"log"
 	"net/http"
 	"strconv"
 )
+
+type UserInput struct {
+	Input int `validate:"min=1,max=300"`
+}
 
 func fib() func() int {
 	a, b, c := 0, 1, 0
@@ -19,15 +24,21 @@ func fib() func() int {
 
 func GetNumbers(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-
 	maxFib, _ := strconv.Atoi(ps.ByName("number"))
-	response := make([]int, 0)
-	f := fib()
-	for i := 0; i < maxFib; i++ {
-		response = append(response, f())
+	query := UserInput{Input: maxFib}
+	
+	if errs := validator.Validate(query); errs != nil {
+		fmt.Fprint(w, "Please enter a number between 1 and 300.")
+	} else {
+		response := make([]int, 0)
+		f := fib()
+		for i := 0; i < maxFib; i++ {
+			response = append(response, f())
+		}
+		jsonArray, _ := json.Marshal(response)
+		fmt.Fprint(w, string(jsonArray))
 	}
-	jsonArray, _ := json.Marshal(response)
-	fmt.Fprint(w, string(jsonArray))
+
 }
 
 func main() {
