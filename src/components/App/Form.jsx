@@ -9,7 +9,7 @@ const Form = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     getFibonacci(input)
-      .then(res => setOutput(res));
+      .then(output => setOutput(output));
   };
 
   const handleChange = ({ target }) => {
@@ -20,7 +20,7 @@ const Form = () => {
     <>
       <div className={styles.Fibonacci}>
         <form className={styles.Form} onSubmit={handleSubmit}>
-          <input type='text' value={input} onChange={handleChange}></input>
+          <input type='number' min="1" max="300" value={input} onChange={handleChange}></input>
           <button>Submit</button>
         </form>
         <div>{output}</div>
