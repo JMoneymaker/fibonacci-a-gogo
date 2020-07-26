@@ -9,12 +9,6 @@ import (
 "encoding/json"
 )
 
-func getIntegerFromParams(str string) int {
-	strVar := str
-	intVar, _ := strconv.Atoi(strVar)
-	return intVar
-}
-
 func fib() func() int {
 	a, b, c := 0, 1, 0
 	return func() int {
@@ -26,7 +20,7 @@ func fib() func() int {
 func GetNumbers(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
-	var maxFib = getIntegerFromParams(ps.ByName("number"))
+	maxFib, _ := strconv.Atoi(ps.ByName("number"))
 	response := make([]int, 0)
 	f := fib()
 		for i := 0; i < maxFib; i++ {
