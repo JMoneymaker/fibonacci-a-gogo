@@ -25,14 +25,14 @@ func fib() func() int {
 
 func GetNumbers(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	var maxFib = getIntegerFromParams(ps.ByName("number"))
-	
-	output := make([]int, 0)
+	response := make([]int, 0)
 	f := fib()
 		for i := 0; i < maxFib; i++ {
-			output = append(output, f())
+			response = append(response, f())
 		}
-		jsonArray, _ := json.Marshal(output)
+		jsonArray, _ := json.Marshal(response)
 		fmt.Fprint(w, string(jsonArray))
 }
 
