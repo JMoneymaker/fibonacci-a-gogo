@@ -33,12 +33,13 @@ func GetNumbers(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	w.Header().Set("content-type", "application/json")
 	var userInput = ps.ByName("number")
 	var maxFib = getIntegerFromParams(userInput)
+	output := make([]int, 0)
 	f := fib()
 		for i := 0; i < maxFib; i++ {
-			fmt.Println(f())
-	}
-	jsonArray, _ := json.Marshal(f())
-	fmt.Fprint(w, string(jsonArray))
+			output = append(output, f())
+		}
+		jsonArray, _ := json.Marshal(output)
+		fmt.Fprint(w, string(jsonArray))
 }
 
 func enableCors(w *http.ResponseWriter) {
