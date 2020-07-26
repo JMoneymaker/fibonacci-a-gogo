@@ -18,11 +18,13 @@ const Form = () => {
 
   return (
     <>
-      <form className={styles.Form} onSubmit={handleSubmit}>
-        <input type='text' value={input} onChange={handleChange}></input>
-        <button>Submit</button>
-      </form>
-      <div>{output}</div>
+      <div className={styles.Fibonacci}>
+        <form className={styles.Form} onSubmit={handleSubmit}>
+          <input type='text' value={input} onChange={handleChange}></input>
+          <button>Submit</button>
+        </form>
+        <div>{output}</div>
+      </div>
     </>
   );
 };
