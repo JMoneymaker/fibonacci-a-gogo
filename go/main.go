@@ -14,7 +14,7 @@ type UserInput struct {
 	Input int `validate:"min=1,max=300"`
 }
 
-func fib() func() int {
+func Fib() func() int {
 	a, b, c := 0, 1, 0
 	return func() int {
 		c, a, b = a, b, a+b
@@ -31,7 +31,7 @@ func GetNumbers(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		fmt.Fprint(w, "Please enter a number between 1 and 300.")
 	} else {
 		response := make([]int, 0)
-		f := fib()
+		f := Fib()
 		for i := 0; i < maxFib; i++ {
 			response = append(response, f())
 		}
